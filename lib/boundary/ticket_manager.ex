@@ -33,6 +33,10 @@ defmodule ParkingLot.Boundary.TicketManager do
     GenServer.cast(manager, :delete_all)
   end
 
+  def update_ticket_exit(manager \\ __MODULE__, ticket_id) do
+    GenServer.call(manager, {:update_time, ticket_id})
+  end
+
   # call handlers
   @impl true
   def handle_call({:add, ticket}, _from, tickets) do
@@ -47,6 +51,23 @@ defmodule ParkingLot.Boundary.TicketManager do
   @impl true
   def handle_call(:get_all, _from, tickets) do
     {:reply, tickets, tickets}
+  end
+
+  @impl true
+  def handle_call({:update_time, ticket_id}, _from, tickets) do
+    tickets =
+      tickets
+      |> Enum.map(fn ticket ->
+        case ticket.id == ticket_id do
+          true ->
+            %{ticket | timestamp_exit: DateTime.utc_now()}
+
+          false ->
+            ticket
+        end
+      end)
+
+    {:reply, :ok, tickets}
   end
 
   @impl true

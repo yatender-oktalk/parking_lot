@@ -36,6 +36,10 @@ defmodule ParkingLot.Core.Ticket do
     TicketManager.get_ticket(ticket_id)
   end
 
+  def update_ticket(ticket) do
+    TicketManager.update_ticket_exit(ticket.ticket_id)
+  end
+
   # Private functions
 
   defp add_vechile(ticket, %{vehicle: vehicle} = _fields) do

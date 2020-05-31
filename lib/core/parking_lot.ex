@@ -34,7 +34,8 @@ defmodule ParkingLot.Core.ParkingLot do
     with [slot] <- fetch_slot(parking_lot, slot_id),
          parking_lot <- move_slot_used(slot, parking_lot, :delete),
          parking_lot <-
-           move_slot_from_slots(slot, parking_lot, :insert) do
+           move_slot_from_slots(slot, parking_lot, :insert),
+         _update_ticket <- Ticket.update_ticket(slot) do
       {:ok, :success, parking_lot}
     else
       [] -> {:error, "invalid slot id or slot already empty", parking_lot}
@@ -42,6 +43,10 @@ defmodule ParkingLot.Core.ParkingLot do
   end
 
   # Private functions
+  def update_ticket(%Slot{id: _id, ticket_id: ticket_id, type: nil}) do
+    Ticket.update_ticket(ticket_id)
+  end
+
   defp fetch_slot(%__MODULE__{used_slots: used_slots}, slot_id) do
     Enum.filter(used_slots, fn x -> x.id == slot_id end)
   end
