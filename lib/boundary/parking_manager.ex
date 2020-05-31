@@ -1,6 +1,6 @@
-defmodule ParkingLot.Boundary.ParkignManager do
+defmodule ParkingLot.Boundary.ParkingManager do
   @moduledoc """
-    The `ParkingLot.Boundary.ParkignManager` server implementation
+    The `ParkingLot.Boundary.ParkingManager` server implementation
     A module which handles everything related to parking and manages the parking state
   """
 
@@ -9,7 +9,7 @@ defmodule ParkingLot.Boundary.ParkignManager do
 
   ##############################################################################
 
-  @doc "Starts the `ParkingLot.Boundary.ParkignManager` server up"
+  @doc "Starts the `ParkingLot.Boundary.ParkingManager` server up"
   def start_link(slot_count \\ 6) do
     GenServer.start_link(__MODULE__, slot_count, name: __MODULE__)
   end
@@ -30,6 +30,14 @@ defmodule ParkingLot.Boundary.ParkignManager do
     GenServer.call(manager, {:park, registration_no, color})
   end
 
+  def leave(manager \\ __MODULE__, slot_id) do
+    GenServer.call(manager, {:leave, slot_id})
+  end
+
+  def state(manager \\ __MODULE__) do
+    GenServer.call(manager, :state)
+  end
+
   ##############################################################################
   #### Call Handlers                                                      ######
   ##############################################################################
@@ -44,5 +52,10 @@ defmodule ParkingLot.Boundary.ParkignManager do
   def handle_call({:leave, slot_id}, _from, state) do
     {_status, msg, state} = ParkingLot.leave(state, slot_id)
     {:reply, msg, state}
+  end
+
+  @impl true
+  def handle_call(:state, _from, state) do
+    {:reply, state, state}
   end
 end
