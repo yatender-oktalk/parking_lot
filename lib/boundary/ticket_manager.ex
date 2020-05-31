@@ -45,7 +45,7 @@ defmodule ParkingLot.Boundary.TicketManager do
     {:reply, tickets, tickets}
   end
 
-  def handle_call(:delete_all, _from, _tickets) do
+  def handle_cast(:delete_all, _tickets) do
     {:noreply, []}
   end
 
