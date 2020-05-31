@@ -2,6 +2,8 @@ defmodule ParkingLot.Core.Ticket do
   @moduledoc """
   This module provides the ticket of a vehicle
   """
+  @type t :: %__MODULE__{}
+  alias ParkingLot.Boundary.{TicketManager}
   @enforce_keys ~w(id vehicle slot_id timestamp_entry)a
 
   defstruct id: nil,
@@ -27,7 +29,12 @@ defmodule ParkingLot.Core.Ticket do
   end
 
   def add_ticket(%__MODULE__{} = ticket) do
+    TicketManager.add_ticket(ticket)
     ticket.id
+  end
+
+  def get_id(ticket_id) do
+    TicketManager.get_ticket(ticket_id)
   end
 
   # Private functions
