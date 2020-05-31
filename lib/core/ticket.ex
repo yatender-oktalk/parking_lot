@@ -2,7 +2,6 @@ defmodule ParkingLot.Core.Ticket do
   @moduledoc """
   This module provides the ticket of a vehicle
   """
-  alias ParkingLot.Core.{Vehicle}
   @enforce_keys ~w(id vehicle slot_id timestamp_entry)a
 
   defstruct id: nil,
@@ -27,13 +26,18 @@ defmodule ParkingLot.Core.Ticket do
     )
   end
 
-  # Private functions
-  defp add_vechile(ticket, %{color: color, registration_no: reg_no} = _fields) do
-    Map.put(ticket, :vehicle, Vehicle.new(%{color: color, registration_no: reg_no}))
+  def add_ticket(%__MODULE__{} = ticket) do
+    ticket.id
   end
 
-  defp add_slot(ticket, fields) do
-    Map.put(ticket, :slot_id, fields[:slot_id])
+  # Private functions
+
+  defp add_vechile(ticket, %{vehicle: vehicle} = _fields) do
+    Map.put(ticket, :vehicle, vehicle)
+  end
+
+  defp add_slot(ticket, %{slot_id: slot_id} = _fields) do
+    Map.put(ticket, :slot_id, slot_id)
   end
 
   defp add_timestamp(ticket) do
