@@ -9,6 +9,7 @@ defmodule ParkingLot.Boundary.TicketManager do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
+  @impl true
   def init(tickets) when is_list(tickets) do
     {:ok, tickets}
   end
@@ -33,18 +34,22 @@ defmodule ParkingLot.Boundary.TicketManager do
   end
 
   # call handlers
+  @impl true
   def handle_call({:add, ticket}, _from, tickets) do
     {:reply, ticket, [ticket | tickets]}
   end
 
+  @impl true
   def handle_call({:get, ticket_id}, _from, tickets) do
     {:reply, fetch_ticket(tickets, ticket_id), tickets}
   end
 
+  @impl true
   def handle_call(:get_all, _from, tickets) do
     {:reply, tickets, tickets}
   end
 
+  @impl true
   def handle_cast(:delete_all, _tickets) do
     {:noreply, []}
   end
