@@ -30,7 +30,6 @@ defmodule ParkingLot.Core.Ticket do
 
   def add_ticket(%__MODULE__{} = ticket) do
     TicketManager.add_ticket(ticket)
-    ticket.id
   end
 
   def get_id(ticket_id) do
