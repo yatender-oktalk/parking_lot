@@ -42,46 +42,46 @@ defmodule ParkingLot.Core.ParkingLot do
   end
 
   # Private functions
-  def fetch_slot(%__MODULE__{used_slots: used_slots}, slot_id) do
+  defp fetch_slot(%__MODULE__{used_slots: used_slots}, slot_id) do
     Enum.filter(used_slots, fn x -> x.id == slot_id end)
   end
 
-  def add_ticket_to_slot(%Slot{} = slot, %Ticket{id: ticket_id}) do
+  defp add_ticket_to_slot(%Slot{} = slot, %Ticket{id: ticket_id}) do
     %{slot | ticket_id: ticket_id}
   end
 
-  def create_ticket(%Slot{id: id}, %Vehicle{} = vehicle) do
+  defp create_ticket(%Slot{id: id}, %Vehicle{} = vehicle) do
     %{slot_id: id, vehicle: vehicle}
     |> Ticket.new()
     |> Ticket.add_ticket()
   end
 
-  def get_vehicle(registration_no, color) do
+  defp get_vehicle(registration_no, color) do
     Vehicle.new(%{color: color, registration_no: registration_no})
   end
 
-  def get_slot(%__MODULE__{slots: []} = _parking_lot) do
+  defp get_slot(%__MODULE__{slots: []} = _parking_lot) do
     {:error, "Sorry, parking lot is full"}
   end
 
-  def get_slot(%__MODULE__{slots: [slot | _remaining_slots]}) do
+  defp get_slot(%__MODULE__{slots: [slot | _remaining_slots]}) do
     {:ok, slot}
   end
 
-  def move_slot_used(slot, %__MODULE__{used_slots: used_slots} = parking_lot, :insert) do
+  defp move_slot_used(slot, %__MODULE__{used_slots: used_slots} = parking_lot, :insert) do
     %{parking_lot | used_slots: [slot | used_slots]}
   end
 
-  def move_slot_used(slot, %__MODULE__{used_slots: used_slots} = parking_lot, :delete) do
+  defp move_slot_used(slot, %__MODULE__{used_slots: used_slots} = parking_lot, :delete) do
     %{parking_lot | used_slots: List.delete(used_slots, slot)}
   end
 
-  def move_slot_from_slots(%Slot{id: id}, %__MODULE__{slots: slots} = parking_lot, :insert) do
+  defp move_slot_from_slots(%Slot{id: id}, %__MODULE__{slots: slots} = parking_lot, :insert) do
     # todo insert increasing order of slot_id
     %{parking_lot | slots: [Slot.new(id: id) | slots]}
   end
 
-  def move_slot_from_slots(slot, %__MODULE__{slots: slots} = parking_lot, :delete) do
+  defp move_slot_from_slots(slot, %__MODULE__{slots: slots} = parking_lot, :delete) do
     %{parking_lot | slots: List.delete(slots, slot)}
   end
 
