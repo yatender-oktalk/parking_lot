@@ -3,7 +3,8 @@ defmodule ParkingLot.Application do
 
   def start(_type, _args) do
     children = [
-      {ParkingLot.Boundary.TicketManager, []}
+      {ParkingLot.Boundary.TicketManager, []},
+      {ParkingLot.Boundary.ParkingManager, 6}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
