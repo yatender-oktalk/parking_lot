@@ -85,7 +85,7 @@ defmodule ParkingLot.Core.ParkingLot do
     %{parking_lot | slots: List.delete(slots, slot)}
   end
 
-  def add_slots(%__MODULE__{} = parking_lot, slot_count) do
+  defp add_slots(%__MODULE__{} = parking_lot, slot_count) do
     slots =
       1..slot_count
       |> Stream.map(&Slot.new(id: &1))
@@ -94,9 +94,9 @@ defmodule ParkingLot.Core.ParkingLot do
     %{parking_lot | slots: slots}
   end
 
-  def add_id(%__MODULE__{} = parking_lot) do
+  defp add_id(%__MODULE__{} = parking_lot) do
     %{parking_lot | id: generate_id()}
   end
 
-  def generate_id(), do: System.unique_integer([:monotonic, :positive])
+  defp generate_id(), do: System.unique_integer([:monotonic, :positive])
 end
