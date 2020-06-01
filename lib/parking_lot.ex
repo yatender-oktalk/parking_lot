@@ -15,8 +15,13 @@ defmodule ParkingLot do
 
   @spec leave(pos_integer()) :: String.t()
   def leave(slot_no) do
-    _resp = ParkingManager.leave(slot_no)
-    "Slot number #{slot_no} is free"
+    case ParkingManager.leave(slot_no) do
+      :success ->
+        "Slot number #{slot_no} is free"
+
+      _ ->
+        "invalid slot id or slot already empty"
+    end
   end
 
   @spec status :: [map()]
@@ -46,7 +51,17 @@ defmodule ParkingLot do
 
   @spec slot_number_for_registration_number(String.t()) :: [number()]
   def slot_number_for_registration_number(registration_no) do
-    status() |> Enum.filter(&(&1.registration_no == registration_no)) |> Enum.map(& &1.slot_no)
+    resp =
+      status()
+      |> Enum.filter(&(&1.registration_no == registration_no))
+      |> Enum.map(& &1.slot_no)
+      |> List.first()
+
+    if resp == nil do
+      "Not found"
+    else
+      resp
+    end
   end
 
   def create_parking_lot(slot_count) do
