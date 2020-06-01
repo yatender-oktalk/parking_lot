@@ -65,7 +65,7 @@ defmodule ParkingLot.Core.ParkingLot do
     Vehicle.new(%{color: color, registration_no: registration_no})
   end
 
-  defp get_slot(%__MODULE__{slots: []} = _parking_lot) do
+  defp get_slot(%__MODULE__{slots: []}) do
     {:error, "Sorry, parking lot is full"}
   end
 
