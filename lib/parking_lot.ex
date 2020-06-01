@@ -47,6 +47,11 @@ defmodule ParkingLot do
     status() |> Enum.filter(&(&1.registration_no == registration_no)) |> Enum.map(& &1.slot_no)
   end
 
+  def create_parking_lot(slot_count) do
+    TicketManager.clear_all_tickets()
+    ParkingManager.create_slots(slot_count)
+  end
+
   defp get_active_tickets() do
     %ParkingLot{used_slots: used_slots} = ParkingManager.state()
     used_slots |> Enum.map(& &1.ticket_id)

@@ -38,6 +38,10 @@ defmodule ParkingLot.Boundary.ParkingManager do
     GenServer.call(manager, :state)
   end
 
+  def create_slots(manager \\ __MODULE__, slot_count) do
+    GenServer.call(manager, {:create, slot_count})
+  end
+
   ##############################################################################
   #### Call Handlers                                                      ######
   ##############################################################################
@@ -56,6 +60,12 @@ defmodule ParkingLot.Boundary.ParkingManager do
 
   @impl true
   def handle_call(:state, _from, state) do
+    {:reply, state, state}
+  end
+
+  @impl true
+  def handle_call({:create, slot_count}, _from, _state) do
+    state = ParkingLot.new(slot_count)
     {:reply, state, state}
   end
 end
