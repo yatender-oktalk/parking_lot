@@ -5,6 +5,7 @@ defmodule ParkingLot do
   alias ParkingLot.Boundary.{ParkingManager, TicketManager}
   alias ParkingLot.Core.{ParkingLot}
 
+  @spec park(String.t(), String.t()) :: pos_integer() | String.t()
   def park(registration_no, color) do
     case ParkingManager.park(registration_no, color) do
       {:ok, ticket} -> ticket.slot_id
@@ -12,9 +13,10 @@ defmodule ParkingLot do
     end
   end
 
+  @spec leave(pos_integer()) :: String.t()
   def leave(slot_no) do
     _resp = ParkingManager.leave(slot_no)
-    {:ok, "Slot number #{slot_no} is free"}
+    "Slot number #{slot_no} is free"
   end
 
   @spec status :: [map()]
