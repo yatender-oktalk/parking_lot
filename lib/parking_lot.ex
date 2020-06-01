@@ -6,11 +6,15 @@ defmodule ParkingLot do
   alias ParkingLot.Core.{ParkingLot}
 
   def park(registration_no, color) do
-    {:ok, ParkingManager.park(registration_no, color)}
+    case ParkingManager.park(registration_no, color) do
+      {:ok, ticket} -> ticket.slot_id
+      {:error, msg} -> msg
+    end
   end
 
   def leave(slot_no) do
-    {:ok, ParkingManager.leave(slot_no)}
+    _resp = ParkingManager.leave(slot_no)
+    {:ok, "Slot number #{slot_no} is free"}
   end
 
   @spec status :: [map()]

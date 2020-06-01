@@ -44,8 +44,8 @@ defmodule ParkingLot.Boundary.ParkingManager do
 
   @impl true
   def handle_call({:park, registration_no, color}, _from, state) do
-    {_status, ticket, state} = ParkingLot.park(state, registration_no, color)
-    {:reply, ticket, state}
+    {status, msg, state} = ParkingLot.park(state, registration_no, color)
+    {:reply, {status, msg}, state}
   end
 
   @impl true
